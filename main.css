@@ -25,7 +25,13 @@ body {
 }
 
 .container
-  :where(.app-header, .suggestions, .prompt-wrapper, .disclaimer-text) {
+  :where(
+    .app-header,
+    .suggestions,
+    .message,
+    .prompt-wrapper,
+    .disclaimer-text
+  ) {
   margin: 0 auto;
   width: 100%;
   max-width: 980px;
@@ -58,6 +64,10 @@ body {
   list-style: none;
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+.container :is(.app-header, .suggestions) {
+  display: none;
 }
 
 .suggestions .suggestions-item {
@@ -107,6 +117,64 @@ body {
   color: #6f42c1;
 }
 
+/* CHATS CONTAINER START */
+.container .chats-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.chats-container .message {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+}
+
+.chats-container .bot-message .avatar {
+  height: 43px;
+  width: 43px;
+  flex-shrink: 0;
+  padding: 6px;
+  align-self: flex-start;
+  margin-right: -7px;
+  border-radius: 50%;
+  background: var(--secondary-color);
+  border: 1px solid var(--secondary-hover-color);
+}
+
+.chats-container .bot-message.loading .avatar {
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.chats-container .message .message-text {
+  padding: 3px 16px;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.chats-container .bot-message {
+  margin: 9px auto;
+}
+
+.chats-container .user-message {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.chats-container .user-message .message-text {
+  padding: 12px 16px;
+  max-width: 75%;
+  border-radius: 13px 13px 3px 13px;
+  background: var(--secondary-color);
+}
+
+/* PROMPT CONTAINER START */
 .prompt-container {
   position: fixed;
   bottom: 0;
@@ -173,11 +241,20 @@ body {
 }
 
 .prompt-form #send-prompt-btn {
+  display: none;
   color: #fff;
   background: #1d7efd;
 }
 
-.prompt-text .disclaimer-text {
+.prompt-form .prompt-input:valid ~ .prompt-actions #send-prompt-btn {
+  display: block;
+}
+
+.prompt-form #send-prompt-btn:hover {
+  background: #0264e3;
+}
+
+.prompt-container .disclaimer-text {
   text-align: center;
   font-size: 0.9rem;
   padding: 16px 20px 0;
