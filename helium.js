@@ -1,6 +1,9 @@
+const container = document.querySelector(".container");
 const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
+const fileInput = promptForm.querySelector("#file-input");
+const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 
 let userMessage = "";
 const chatHistory = [];
@@ -14,6 +17,28 @@ const createMsgElement = (content, ...classes) => {
   div.classList.add("message", ...classes);
   div.innerHTML = content;
   return div;
+};
+
+// Auto scroll text response
+const scrollToBottom = () =>
+  container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+
+// Efek mengetik satu persatu dari respon AI
+const typingEffect = (text, textElement, botMsgDiv) => {
+  textElement.textContent = "";
+  const words = text.split(" ");
+  let wordIndex = 0;
+
+  const typingInterval = setInterval(() => {
+    if (wordIndex < words.length) {
+      textElement.textContent +=
+        (wordIndex === 0 ? "" : " ") + words[wordIndex++];
+      botMsgDiv.classList.remove("loading");
+      scrollToBottom();
+    } else {
+      clearInterval(typingInterval);
+    }
+  }, 40);
 };
 
 // MEMBUAT PENGAMBILAN API DAN RESPON DARI AI
@@ -39,7 +64,7 @@ const generateResponse = async (botMsgDiv) => {
     const responseText = data.candidates[0].content.parts[0].text
       .replace(/\*\*([^*]+)\*\*/g, "$1")
       .trim();
-    textElement.textContent = responseText;
+    typingEffect(responseText, textElement, botMsgDiv);
   } catch (error) {}
   console.log(error);
 };
@@ -57,14 +82,42 @@ const handleFormSubmit = (e) => {
 
   userMsgDiv.querySelector(".message-text").textContent = userMessage;
   chatsContainer.appendChild(userMsgDiv);
+  scrollToBottom();
 
   //   Proses loading
   setTimeout(() => {
     const botMsgHTML = ` <img src="./img/gemini.svg" class="avatar" /> <p class="message-text">Mikir bentar guyss...</p>`;
     const botMsgDiv = createMsgElement(botMsgHTML, "bot-message", "loading");
     chatsContainer.appendChild(botMsgDiv);
+    scrollToBottom();
     generateResponse(botMsgDiv);
   }, 600);
 };
 
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const isImage = file.type.startsWith("image/");
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = (e) => {
+    fileInput.value = "";
+    fileUploadWrapper.querySelector(".file-preview").src = e.target.result;
+    fileUploadWrapper.classList.add(
+      "active",
+      isImage ? "img-attached" : "file-attached"
+    );
+  };
+});
+
+// Cancel file upload
+document.querySelector("#cancel-file-btn").addEventListener("click", () => {
+  fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
+});
+
 promptForm.addEventListener("submit", handleFormSubmit);
+promptForm
+  .querySelector("#add-file-btn")
+  .addEventListener("click", () => fileInput.click());

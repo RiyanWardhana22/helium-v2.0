@@ -59,13 +59,35 @@
               required
             />
             <div class="prompt-actions">
-              <button
-                type="button"
-                id="add-file-btn"
-                class="material-symbols-rounded"
-              >
-                attach_file
-              </button>
+              <div class="file-upload-wrapper">
+                <img src="#" alt="" class="file-preview" />
+                <input
+                  type="file"
+                  accept="image/*, .pdf, .txt, .csv"
+                  id="file-input"
+                  hidden
+                />
+                <button
+                  type="button"
+                  class="file-icon material-symbols-rounded"
+                >
+                  description
+                </button>
+                <button
+                  type="button"
+                  id="add-file-btn"
+                  class="material-symbols-rounded"
+                >
+                  attach_file
+                </button>
+                <button
+                  type="button"
+                  id="cancel-file-btn"
+                  class="material-symbols-rounded"
+                >
+                  close
+                </button>
+              </div>
               <button id="send-prompt-btn" class="material-symbols-rounded">
                 arrow_upward
               </button>
