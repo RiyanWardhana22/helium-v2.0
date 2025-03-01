@@ -177,13 +177,13 @@ body {
   background: var(--secondary-color);
 }
 
-.chats-container .user-message .img-attachement {
+.chats-container .user-message .img-attachment {
   width: 50%;
   margin-top: -7px;
   border-radius: 13px 3px 13px 13px;
 }
 
-.chats-container .user-message .file-attachement {
+.chats-container .user-message .file-attachment {
   display: flex;
   background: var(--secondary-color);
   gap: 6px;
@@ -193,7 +193,7 @@ body {
   border-radius: 13px 3px 13px 13px;
 }
 
-.chats-container .user-message .file-attachement span {
+.chats-container .user-message .file-attachment span {
   color: #1d7efd;
 }
 
