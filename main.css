@@ -55,7 +55,7 @@ body {
 }
 
 .app-header .sub-heading {
-  font-size: 2.6rem;
+  font-size: 2rem;
   margin-top: -5px;
   color: var(--subheading-color);
 }
