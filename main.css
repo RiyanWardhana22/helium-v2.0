@@ -23,7 +23,7 @@ body {
 .container {
   overflow-y: auto;
   padding: 32px 0px 60px;
-  max-height: calc(100vh - 127px);
+  max-height: calc(100vh - 5rem);
   scrollbar-color: var(--scrollbar-color) transparent;
 }
 
