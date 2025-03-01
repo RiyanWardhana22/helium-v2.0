@@ -5,6 +5,7 @@ const promptInput = promptForm.querySelector(".prompt-input");
 const fileInput = promptForm.querySelector("#file-input");
 const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 
+let typingInterval, controller;
 const chatHistory = [];
 let userData = { message: "", file: {} };
 
@@ -29,7 +30,7 @@ const typingEffect = (text, textElement, botMsgDiv) => {
   const words = text.split(" ");
   let wordIndex = 0;
 
-  const typingInterval = setInterval(() => {
+  typingInterval = setInterval(() => {
     if (wordIndex < words.length) {
       textElement.textContent +=
         (wordIndex === 0 ? "" : " ") + words[wordIndex++];
@@ -44,6 +45,7 @@ const typingEffect = (text, textElement, botMsgDiv) => {
 // MEMBUAT PENGAMBILAN API DAN RESPON DARI AI
 const generateResponse = async (botMsgDiv) => {
   const textElement = botMsgDiv.querySelector(".message-text");
+  controller = new AbortController();
 
   // MENAMBAHKAN PESAN USER DAN FILE KE CHAT HISTORY
   chatHistory.push({
@@ -68,6 +70,7 @@ const generateResponse = async (botMsgDiv) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contents: chatHistory }),
+      signal: controller.signal,
     });
 
     const data = await response.json();
@@ -154,6 +157,13 @@ fileInput.addEventListener("change", () => {
 document.querySelector("#cancel-file-btn").addEventListener("click", () => {
   userData.file = {};
   fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
+});
+
+// Button Stop Response
+document.querySelector("#stop-response-btn").addEventListener("click", () => {
+  userData.file = {};
+  controller?.abort();
+  clearInterval(typingInterval);
 });
 
 promptForm.addEventListener("submit", handleFormSubmit);
