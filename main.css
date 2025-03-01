@@ -303,6 +303,15 @@ body {
   color: #1d7efd;
 }
 
+.prompt-form #stop-response-btn,
+body.bot-responding .prompt-form .file-upload-wrapper {
+  display: none;
+}
+
+body.bot-responding .prompt-form #stop-response-btn {
+  display: block;
+}
+
 .prompt-container .disclaimer-text {
   text-align: center;
   font-size: 0.9rem;
