@@ -318,3 +318,58 @@ body.bot-responding .prompt-form #stop-response-btn {
   padding: 16px 20px 0;
   color: var(--placeholder-color);
 }
+
+/* Code Frame */
+.code-frame {
+  display: block;
+  width: 75%;
+  max-height: max-content;
+  border-radius: 8px;
+  background: #181e29;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0; /* Tambahkan margin untuk jarak antar elemen */
+}
+.code-frame-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 8px 12px;
+  background: #4f4f59;
+  border-bottom: 1px solid #3a3a3a;
+  border-radius: 8px 8px 0 0;
+}
+
+.copy-code {
+  background: var(--secondary-color);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.code-frame pre {
+  padding: 1rem;
+  margin: 0;
+  overflow-x: auto;
+}
+
+.code-frame code {
+  font-family: "Fira Code", monospace;
+  color: #9cdcff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .code-frame {
+    width: 90%; /* Sesuaikan lebar untuk perangkat kecil */
+  }
+
+  .code-frame-header {
+    flex-direction: column; /* Ubah tata letak header untuk perangkat kecil */
+    align-items: flex-start;
+  }
+
+  .code-frame pre {
+    padding: 0.5rem; /* Kurangi padding untuk perangkat kecil */
+  }
+}

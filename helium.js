@@ -47,21 +47,37 @@ const scrollToBottom = () =>
 // Efek mengetik satu persatu dari respon AI
 const typingEffect = (text, textElement, botMsgDiv) => {
   textElement.textContent = "";
-  const words = text.split(" ");
-  let wordIndex = 0;
-
-  typingInterval = setInterval(() => {
-    if (wordIndex < words.length) {
-      textElement.textContent +=
-        (wordIndex === 0 ? "" : " ") + words[wordIndex++];
-      scrollToBottom();
-    } else {
-      clearInterval(typingInterval);
-      botMsgDiv.classList.remove("loading");
-      document.body.classList.remove("bot-responding");
-      saveLocalStorage();
-    }
-  }, 40);
+  if (text.includes("```")) {
+    text = text.replace(
+      /```([a-zA-Z]*)\n([\s\S]*?)\n```/g,
+      (match, lang, code) => {
+        return `
+        <div class="code-frame">
+          <div class="code-frame-header">
+            <span class="code-title">${lang}</span>
+            <button class="copy-code" onclick="copyCode(this)"><i class='bx bx-copy'></i> Copy</button>
+        </div>
+        <pre><code>${code}</code></pre>
+        </div>`;
+      }
+    );
+    textElement.innerHTML = text;
+  } else {
+    const words = text.split(" ");
+    let wordIndex = 0;
+    typingInterval = setInterval(() => {
+      if (wordIndex < words.length) {
+        textElement.textContent +=
+          (wordIndex === 0 ? "" : " ") + words[wordIndex++];
+        scrollToBottom();
+      } else {
+        clearInterval(typingInterval);
+        botMsgDiv.classList.remove("loading");
+        document.body.classList.remove("bot-responding");
+        saveLocalStorage();
+      }
+    }, 40);
+  }
 };
 
 // MEMBUAT PENGAMBILAN API DAN RESPON DARI AI
