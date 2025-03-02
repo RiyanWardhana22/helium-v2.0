@@ -320,16 +320,18 @@ body.bot-responding .prompt-form #stop-response-btn {
 }
 
 /* Code Frame */
-.code-frame {
+.chats-container .code-frame {
   display: block;
   width: 75%;
+  max-width: 100%; /* Tambahkan ini untuk memastikan tidak melebihi lebar layar */
   max-height: max-content;
   border-radius: 8px;
   background: #181e29;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 10px 0; /* Tambahkan margin untuk jarak antar elemen */
+  margin: 10px 0;
 }
-.code-frame-header {
+
+.chats-container .code-frame-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -340,36 +342,46 @@ body.bot-responding .prompt-form #stop-response-btn {
   border-radius: 8px 8px 0 0;
 }
 
-.copy-code {
+.chats-container .copy-code {
   background: var(--secondary-color);
   border-radius: 8px;
   padding: 8px;
+  right: 0;
   color: var(--text-color);
   cursor: pointer;
 }
-.code-frame pre {
+
+.chats-container .code-frame pre {
   padding: 1rem;
   margin: 0;
   overflow-x: auto;
 }
 
-.code-frame code {
+.chats-container .code-frame code {
   font-family: "Fira Code", monospace;
   color: #9cdcff;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .code-frame {
-    width: 90%; /* Sesuaikan lebar untuk perangkat kecil */
+@media (max-width: 450px) {
+  .chats-container .bot-message .avatar {
+    display: none;
+  }
+  .chats-container .code-frame {
+    width: 100%;
+    max-width: 100%;
   }
 
-  .code-frame-header {
-    flex-direction: column; /* Ubah tata letak header untuk perangkat kecil */
-    align-items: flex-start;
+  .chats-container .code-frame pre {
+    word-wrap: break-word;
+    white-space: pre-line;
+    padding: 0.5rem;
   }
 
-  .code-frame pre {
-    padding: 0.5rem; /* Kurangi padding untuk perangkat kecil */
+  .chats-container .code-frame-header {
+    padding: 6px 10px;
+  }
+
+  .chats-container .copy-code {
+    padding: 6px;
   }
 }

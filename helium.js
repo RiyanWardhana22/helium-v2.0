@@ -62,6 +62,9 @@ const typingEffect = (text, textElement, botMsgDiv) => {
       }
     );
     textElement.innerHTML = text;
+    botMsgDiv.classList.remove("loading");
+    document.body.classList.remove("bot-responding");
+    saveLocalStorage();
   } else {
     const words = text.split(" ");
     let wordIndex = 0;
