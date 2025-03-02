@@ -222,9 +222,10 @@ body.chats-active .container :where(.app-header, .suggestions) {
 }
 
 .prompt-form .prompt-input {
-  height: 47px;
+  height: 56px;
   max-height: 200px;
   width: 100%;
+  font-size: 0.9rem;
   border: none;
   outline: none;
   resize: none;

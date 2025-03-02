@@ -85,13 +85,13 @@ const typingEffect = (text, textElement, botMsgDiv) => {
 
 // Auto resize height message input
 promptForm.addEventListener("input", () => {
-  promptForm.style.height = "47px";
+  promptForm.style.height = "56px";
   promptForm.style.height = `${promptForm.scrollHeight}px`;
 });
 
 // Reset Auto Resize ketika pesan terkirim
 document.querySelector("#send-prompt-btn").addEventListener("click", () => {
-  promptForm.style.height = "47px";
+  promptForm.style.height = "56px";
 });
 
 // Functiin Copy Code
@@ -264,11 +264,29 @@ document.querySelector("#stop-response-btn").addEventListener("click", () => {
 
 // Button Delete Chats
 document.querySelector("#delete-chats-btn").addEventListener("click", () => {
-  chatHistory.length = 0;
-  chatsContainer.innerHTML = "";
-  document.body.classList.remove("bot-responding", "chats-active");
-  localStorage.removeItem("savedChats");
-  localStorage.removeItem("chatHistory");
+  Swal.fire({
+    title: "Hapus semua pesan?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Hapus",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      chatHistory.length = 0;
+      chatsContainer.innerHTML = "";
+      document.body.classList.remove("bot-responding", "chats-active");
+      localStorage.removeItem("savedChats");
+      localStorage.removeItem("chatHistory");
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Semua pesan terhapus!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  });
 });
 
 // Handle suggestions card
