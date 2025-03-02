@@ -83,6 +83,17 @@ const typingEffect = (text, textElement, botMsgDiv) => {
   }
 };
 
+// Auto resize height message input
+promptForm.addEventListener("input", () => {
+  promptForm.style.height = "47px";
+  promptForm.style.height = `${promptForm.scrollHeight}px`;
+});
+
+// Reset Auto Resize ketika pesan terkirim
+document.querySelector("#send-prompt-btn").addEventListener("click", () => {
+  promptForm.style.height = "47px";
+});
+
 // Functiin Copy Code
 const copyCode = (button) => {
   const codeFrame = button.closest(".code-frame");
