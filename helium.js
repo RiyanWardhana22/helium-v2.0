@@ -6,11 +6,31 @@ const fileInput = promptForm.querySelector("#file-input");
 const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 
 let typingInterval, controller;
-const chatHistory = [];
+let chatHistory = [];
 let userData = { message: "", file: {} };
 
 const API_KEY = "AIzaSyA3T2FKL_DhMGY2SCdNx9E5aYmIY2lYiO8";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+const saveLocalStorage = () => {
+  const chatsHTML = chatsContainer.innerHTML;
+  localStorage.setItem("savedChats", chatsHTML);
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+};
+
+const loadLocalStorage = () => {
+  const savedChats = localStorage.getItem("savedChats");
+  const savedChatHistory = localStorage.getItem("chatHistory");
+  if (savedChats) {
+    chatsContainer.innerHTML = savedChats;
+    document.body.classList.add("chats-active");
+  }
+  if (savedChatHistory) {
+    chatHistory = JSON.parse(savedChatHistory);
+  }
+};
+
+loadLocalStorage();
 
 // Function membuat element pesan
 const createMsgElement = (content, ...classes) => {
@@ -39,6 +59,7 @@ const typingEffect = (text, textElement, botMsgDiv) => {
       clearInterval(typingInterval);
       botMsgDiv.classList.remove("loading");
       document.body.classList.remove("bot-responding");
+      saveLocalStorage();
     }
   }, 40);
 };
@@ -47,8 +68,6 @@ const typingEffect = (text, textElement, botMsgDiv) => {
 const generateResponse = async (botMsgDiv) => {
   const textElement = botMsgDiv.querySelector(".message-text");
   controller = new AbortController();
-
-  // MENAMBAHKAN PESAN USER DAN FILE KE CHAT HISTORY
   chatHistory.push({
     role: "user",
     parts: [
@@ -66,7 +85,6 @@ const generateResponse = async (botMsgDiv) => {
   });
 
   try {
-    // MENNGIRIM CHAT HISTORY KE API UNTUK DI RESPON
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -82,6 +100,7 @@ const generateResponse = async (botMsgDiv) => {
     typingEffect(responseText, textElement, botMsgDiv);
 
     chatHistory.push({ role: "model", parts: [{ text: responseText }] });
+    saveLocalStorage();
   } catch (error) {
     textElement.style.color = "#d62939";
     textElement.textContent =
@@ -108,24 +127,39 @@ const handleFormSubmit = (e) => {
   fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
 
   const userMsgHTML = `
-  <p class="message-text"></p>
-  ${
-    userData.file.data
-      ? userData.file.isImage
-        ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="img-attachment" />`
-        : `<p class="file-attachment"><span
-    class="material-symbols-rounded">description</span>${userData.file.fileName}</p>`
-      : ""
-  }
-    `;
+    <p class="message-text"></p>
+    ${
+      userData.file.data
+        ? userData.file.isImage
+          ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="img-attachment" />`
+          : `<p class="file-attachment"><span class="material-symbols-rounded">description</span>${userData.file.fileName}</p>`
+        : ""
+    }
+  `;
 
   const userMsgDiv = createMsgElement(userMsgHTML, "user-message");
-
   userMsgDiv.querySelector(".message-text").textContent = userMessage;
   chatsContainer.appendChild(userMsgDiv);
   scrollToBottom();
 
-  //   Proses loading
+  chatHistory.push({
+    role: "user",
+    parts: [
+      { text: userMessage },
+      ...(userData.file.data
+        ? [
+            {
+              inline_data: (({ fileName, isImage, ...rest }) => rest)(
+                userData.file
+              ),
+            },
+          ]
+        : []),
+    ],
+  });
+  saveLocalStorage();
+
+  // Proses loading
   setTimeout(() => {
     const botMsgHTML = ` <img src="./img/gemini.svg" class="avatar" /> <p class="message-text">Mikir bentar guyss...</p>`;
     const botMsgDiv = createMsgElement(botMsgHTML, "bot-message", "loading");
@@ -158,13 +192,14 @@ fileInput.addEventListener("change", () => {
       mime_type: file.type,
       isImage,
     };
+    saveLocalStorage();
   };
 });
 
-// Cancel file upload
 document.querySelector("#cancel-file-btn").addEventListener("click", () => {
   userData.file = {};
   fileUploadWrapper.classList.remove("active", "img-attached", "file-attached");
+  saveLocalStorage();
 });
 
 // Button Stop Response
@@ -183,6 +218,8 @@ document.querySelector("#delete-chats-btn").addEventListener("click", () => {
   chatHistory.length = 0;
   chatsContainer.innerHTML = "";
   document.body.classList.remove("bot-responding", "chats-active");
+  localStorage.removeItem("savedChats");
+  localStorage.removeItem("chatHistory");
 });
 
 // Handle suggestions card
