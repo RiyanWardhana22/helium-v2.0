@@ -56,8 +56,8 @@ const typingEffect = (text, textElement, botMsgDiv) => {
           <div class="code-frame-header">
             <span class="code-title">${lang}</span>
             <button class="copy-code" onclick="copyCode(this)"><i class='bx bx-copy'></i> Copy</button>
-        </div>
-        <pre><code>${code}</code></pre>
+          </div>
+          <pre><code>${code}</code></pre>
         </div>`;
       }
     );
@@ -78,6 +78,25 @@ const typingEffect = (text, textElement, botMsgDiv) => {
       }
     }, 40);
   }
+};
+
+// Functiin Copy Code
+const copyCode = (button) => {
+  const codeFrame = button.closest(".code-frame");
+  const codeElement = codeFrame.querySelector("pre code");
+  const codeText = codeElement.textContent;
+
+  navigator.clipboard
+    .writeText(codeText)
+    .then(() => {
+      button.innerHTML = "<i class='bx bx-check'></i> Copied!";
+      setTimeout(() => {
+        button.innerHTML = "<i class='bx bx-copy'></i> Copy";
+      }, 2000);
+    })
+    .catch((err) => {
+      console.error("Failed to copy text: ", err);
+    });
 };
 
 // MEMBUAT PENGAMBILAN API DAN RESPON DARI AI
