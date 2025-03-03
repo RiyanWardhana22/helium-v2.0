@@ -113,6 +113,14 @@ const copyCode = (button) => {
     });
 };
 
+// MENANGANI KETIKA USER MENEKAN TOMBOL ENTER
+promptInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    handleFormSubmit(event);
+  }
+});
+
 // MEMBUAT PENGAMBILAN API DAN RESPON DARI AI
 const generateResponse = async (botMsgDiv) => {
   const textElement = botMsgDiv.querySelector(".message-text");
