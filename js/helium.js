@@ -57,25 +57,28 @@ const checkCustomKnowledge = (userQuestion) => {
 };
 
 const respondWithCustomKnowledge = (response) => {
-  const messageContent = `
+  const botMsgHTML = `
     <svg class="avatar" width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
       <path d="M16 0c8.837 0 16 7.163 16 16s-7.163 16-16 16S0 24.837 0 16 7.163 0 16 0zM9.356 19.803v5.744h3.42v-2.325l-.006-.188a3.42 3.42 0 00-3.414-3.231zm3.302-13.11h-3.42v7.6l.005.188a3.42 3.42 0 003.415 3.232h4.916l.17.008a1.71 1.71 0 011.54 
       1.702v5.89h3.419v-7.6l-.006-.2a3.419 3.419 0 00-3.412-3.22h-4.918l-.147-.006a1.71 1.71 0 01-1.562-1.703v-5.89zm9.928.236h-3.42v2.325l.005.187a3.42 3.42 0 003.415 3.232V6.93z"/>
     </svg>
-    <div class="message-text">${response}</div>
-    <span onclick="copyMessage(this)" class="copy"><i class="bx bx-copy"></i></span>
+    <p class="message-text loading">...</p>
   `;
-  const botMsgDiv = createMsgElement(messageContent, "bot-message");
+  const botMsgDiv = createMsgElement(botMsgHTML, "bot-message", "loading");
   chatsContainer.appendChild(botMsgDiv);
   chatsContainer.scrollTo({
     top: chatsContainer.scrollHeight,
     behavior: "smooth",
   });
   document.body.classList.add("hide-message");
-  localStorage.setItem("savedChats", chatsContainer.innerHTML);
+
+  setTimeout(() => {
+    const textElement = botMsgDiv.querySelector(".message-text");
+    typingEffect(response, textElement, botMsgDiv);
+  }, 500);
+
   return true;
 };
-
 // Function membuat element pesan
 const createMsgElement = (content, ...classes) => {
   const div = document.createElement("div");
@@ -116,7 +119,10 @@ const typingEffect = (text, textElement, botMsgDiv) => {
       if (wordIndex < words.length) {
         textElement.textContent +=
           (wordIndex === 0 ? "" : " ") + words[wordIndex++];
-        scrollToBottom();
+        chatsContainer.scrollTo({
+          top: chatsContainer.scrollHeight,
+          behavior: "smooth",
+        });
       } else {
         clearInterval(typingInterval);
         botMsgDiv.classList.remove("loading");
