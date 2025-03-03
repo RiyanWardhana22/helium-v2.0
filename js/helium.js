@@ -32,6 +32,50 @@ const loadLocalStorage = () => {
 
 loadLocalStorage();
 
+// CUSTOM KNOWLEDGE HELIUM
+const normalizeText = (text) => text.toLowerCase().trim().replace(/\s+/g, " ");
+const checkCustomKnowledge = (userQuestion) => {
+  const normalizedQuestion = normalizeText(userQuestion);
+
+  if (window.customKnowledge) {
+    for (const key in window.customKnowledge) {
+      const mainKey = window.customKnowledge[key];
+      const normalizedKey = normalizeText(key);
+      if (normalizedQuestion === normalizedKey) {
+        return respondWithCustomKnowledge(mainKey.response);
+      }
+      if (Array.isArray(mainKey.variants)) {
+        for (const variant of mainKey.variants) {
+          if (normalizedQuestion === normalizeText(variant)) {
+            return respondWithCustomKnowledge(mainKey.response);
+          }
+        }
+      }
+    }
+  }
+  return false;
+};
+
+const respondWithCustomKnowledge = (response) => {
+  const messageContent = `
+    <svg class="avatar" width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 0c8.837 0 16 7.163 16 16s-7.163 16-16 16S0 24.837 0 16 7.163 0 16 0zM9.356 19.803v5.744h3.42v-2.325l-.006-.188a3.42 3.42 0 00-3.414-3.231zm3.302-13.11h-3.42v7.6l.005.188a3.42 3.42 0 003.415 3.232h4.916l.17.008a1.71 1.71 0 011.54 
+      1.702v5.89h3.419v-7.6l-.006-.2a3.419 3.419 0 00-3.412-3.22h-4.918l-.147-.006a1.71 1.71 0 01-1.562-1.703v-5.89zm9.928.236h-3.42v2.325l.005.187a3.42 3.42 0 003.415 3.232V6.93z"/>
+    </svg>
+    <div class="message-text">${response}</div>
+    <span onclick="copyMessage(this)" class="copy"><i class="bx bx-copy"></i></span>
+  `;
+  const botMsgDiv = createMsgElement(messageContent, "bot-message");
+  chatsContainer.appendChild(botMsgDiv);
+  chatsContainer.scrollTo({
+    top: chatsContainer.scrollHeight,
+    behavior: "smooth",
+  });
+  document.body.classList.add("hide-message");
+  localStorage.setItem("savedChats", chatsContainer.innerHTML);
+  return true;
+};
+
 // Function membuat element pesan
 const createMsgElement = (content, ...classes) => {
   const div = document.createElement("div");
@@ -215,7 +259,7 @@ const handleFormSubmit = (e) => {
     ],
   });
   saveLocalStorage();
-
+  if (checkCustomKnowledge(userData.message)) return;
   // Proses loading
   setTimeout(() => {
     const botMsgHTML = `<svg class="avatar" width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
