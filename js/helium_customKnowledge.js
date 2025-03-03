@@ -107,4 +107,10 @@ window.customKnowledge = {
     ],
     response: "Pak Said",
   },
+
+  "siapa itu riyan": {
+    variants: ["riyan itu siapa"],
+    response:
+      "Riyan Wardhana adalah salah satu mahasiswa Universitas Negeri Medan dengan program studi Ilmu Komputer lahir pada 22 Juni 2005",
+  },
 };
