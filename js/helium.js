@@ -66,6 +66,7 @@ const respondWithCustomKnowledge = (response) => {
   `;
   const botMsgDiv = createMsgElement(botMsgHTML, "bot-message", "loading");
   chatsContainer.appendChild(botMsgDiv);
+  scrollToBottom();
   chatsContainer.scrollTo({
     top: chatsContainer.scrollHeight,
     behavior: "smooth",
@@ -88,8 +89,10 @@ const createMsgElement = (content, ...classes) => {
 };
 
 // Auto scroll text response
-const scrollToBottom = () =>
+const scrollToBottom = () => {
+  console.log("Scrolling to bottom", container.scrollHeight);
   container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+};
 
 // Efek mengetik satu persatu dari respon AI
 const typingEffect = (text, textElement, botMsgDiv) => {
@@ -132,17 +135,6 @@ const typingEffect = (text, textElement, botMsgDiv) => {
     }, 40);
   }
 };
-
-// Auto resize height message input
-promptForm.addEventListener("input", () => {
-  promptForm.style.height = "56px";
-  promptForm.style.height = `${promptForm.scrollHeight}px`;
-});
-
-// Reset Auto Resize ketika pesan terkirim
-document.querySelector("#send-prompt-btn").addEventListener("click", () => {
-  promptForm.style.height = "56px";
-});
 
 // Functiin Copy Code
 const copyCode = (button) => {
@@ -271,7 +263,14 @@ const handleFormSubmit = (e) => {
     const botMsgHTML = `<svg class="avatar" width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 0c8.837 0 16 7.163 16 16s-7.163 16-16 16S0 24.837 0 16 7.163 0 16 0zM9.356 19.803v5.744h3.42v-2.325l-.006-.188a3.42 3.42 0 00-3.414-3.231zm3.302-13.11h-3.42v7.6l.005.188a3.42 3.42 0 003.415 3.232h4.916l.17.008a1.71 1.71 0 011.54 
             1.702v5.89h3.419v-7.6l-.006-.2a3.419 3.419 0 00-3.412-3.22h-4.918l-.147-.006a1.71 1.71 0 01-1.562-1.703v-5.89zm9.928.236h-3.42v2.325l.005.187a3.42 3.42 0 003.415 3.232V6.93z"/>
-          </svg> <p class="message-text">Mikir bentar guyss...</p>`;
+          </svg> 
+          <div class="message-text">
+            <div class="thinking-indicator">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>`;
     const botMsgDiv = createMsgElement(botMsgHTML, "bot-message", "loading");
     chatsContainer.appendChild(botMsgDiv);
     scrollToBottom();
@@ -339,13 +338,6 @@ document.querySelector("#delete-chats-btn").addEventListener("click", () => {
       document.body.classList.remove("bot-responding", "chats-active");
       localStorage.removeItem("savedChats");
       localStorage.removeItem("chatHistory");
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Semua pesan terhapus!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     }
   });
 });
