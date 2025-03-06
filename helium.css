@@ -400,11 +400,33 @@ body.bot-responding .prompt-form #stop-response-btn {
   color: var(--placeholder-color);
 }
 
+/* Copy Message */
+.copy-message-btn {
+  align-self: flex-start;
+  margin-left: 1rem;
+  padding: 5px;
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.copy-message-btn:hover {
+  background: var(--secondary-hover-color);
+}
+
+.copy-message-btn i {
+  margin-right: 5px;
+}
+
 /* Code Frame */
 .chats-container .code-frame {
   display: block;
   width: 75%;
-  max-width: 100%; /* Tambahkan ini untuk memastikan tidak melebihi lebar layar */
+  max-width: 100%;
   max-height: max-content;
   border-radius: 8px;
   background: #181e29;

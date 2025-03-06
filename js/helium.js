@@ -80,12 +80,47 @@ const respondWithCustomKnowledge = (response) => {
 
   return true;
 };
+
 // Function membuat element pesan
 const createMsgElement = (content, ...classes) => {
   const div = document.createElement("div");
   div.classList.add("message", ...classes);
   div.innerHTML = content;
+  if (classes.includes("bot-message")) {
+    const messageContainer = document.createElement("div");
+    messageContainer.classList.add("message-container");
+    const messageText = div.querySelector(".message-text");
+    if (messageText) {
+      messageContainer.appendChild(messageText);
+    }
+    const copyButton = document.createElement("button");
+    copyButton.classList.add("copy-message-btn");
+    copyButton.innerHTML = "<i class='bx bxs-copy'></i>";
+    copyButton.onclick = () => copyMessage(messageText);
+
+    messageContainer.appendChild(copyButton);
+    div.appendChild(messageContainer);
+  }
   return div;
+};
+
+// Function Copy Message
+const copyMessage = (messageElement) => {
+  const textToCopy = messageElement.textContent || messageElement.innerText;
+  navigator.clipboard
+    .writeText(textToCopy)
+    .then(() => {
+      const copyButton = messageElement
+        .closest(".message-container")
+        .querySelector(".copy-message-btn");
+      copyButton.innerHTML = `<i class='bx bx-check'></i> Copied!`;
+      setTimeout(() => {
+        copyButton.innerHTML = `<i class='bx bxs-copy'></i>`;
+      }, 1000);
+    })
+    .catch((err) => {
+      console.error("Failed to copy text: ", err);
+    });
 };
 
 // Auto scroll text response
