@@ -45,6 +45,39 @@ body {
   margin-top: 4vh;
 }
 
+.helium-header {
+  display: flex;
+  width: 100%;
+  position: fixed;
+  align-items: center;
+  background: var(--primary-color);
+  padding: 5px 20px;
+}
+
+.helium-header .home-btn {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  padding: 2px;
+  margin-left: 2vw;
+  cursor: pointer;
+  background: none;
+  color: var(--subheading-color);
+  transition: 0.2s ease;
+}
+
+.helium-header .home-btn:hover {
+  background: var(--scrollbar-color);
+  color: var(--text-color);
+}
+
 .app-header .heading {
   font-size: 3rem;
   width: fit-content;
@@ -124,6 +157,7 @@ body.chats-active .container :where(.app-header, .suggestions) {
 .container .chats-container {
   display: flex;
   gap: 20px;
+  margin-top: 2rem;
   flex-direction: column;
 }
 
@@ -368,6 +402,10 @@ body.bot-responding .prompt-form #stop-response-btn {
 }
 
 @media (max-width: 450px) {
+  .helium-header .home-btn {
+    margin-left: 0;
+  }
+
   .chats-container .bot-message .avatar {
     display: none;
   }

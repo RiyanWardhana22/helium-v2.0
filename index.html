@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helium AI</title>
-    <link rel="stylesheet" href="./main.css" />
+    <link rel="stylesheet" href="./helium.css" />
     <!-- Icon Fonts Google -->
     <link
       rel="stylesheet"
@@ -27,94 +27,99 @@
   </head>
   <body>
     <!-- Helium AI START -->
-    <div class="container">
-      <header class="app-header">
-        <h1 class="heading">Helium</h1>
-        <h2 class="sub-heading">
-          <span id="greeting"></span>, mau tanyaa apaa nihh
-        </h2>
-      </header>
+    <div class="helium">
+      <div class="helium-header">
+        <a class="home-btn" href=""><i class="bx bxs-home"></i></a>
+      </div>
+      <div class="container">
+        <header class="app-header">
+          <h1 class="heading">Helium</h1>
+          <h2 class="sub-heading">
+            <span id="greeting"></span>, mau tanyaa apaa nihh
+          </h2>
+        </header>
 
-      <ul class="suggestions">
-        <li class="suggestions-item">
-          <p class="text">
-            Tips membangun personal branding yang efektif di media sosial
-          </p>
-          <span class="material-symbols-rounded">draw</span>
-        </li>
-        <li class="suggestions-item">
-          <p class="text">Tips agar tetap produktif di tahun 2025</p>
-          <span class="material-symbols-rounded">lightbulb</span>
-        </li>
-        <li class="suggestions-item">
-          <p class="text">
-            Bagaimana cara memulai bisnis online dengan biaya minimal?
-          </p>
-          <span class="material-symbols-rounded">explore</span>
-        </li>
-        <li class="suggestions-item">
-          <p class="text">
-            Bagaimana agar tetap konsisten untuk belajar pemrograman
-          </p>
-          <span class="material-symbols-rounded">code_blocks</span>
-        </li>
-      </ul>
+        <ul class="suggestions">
+          <li class="suggestions-item">
+            <p class="text">
+              Tips membangun personal branding yang efektif di media sosial
+            </p>
+            <span class="material-symbols-rounded">draw</span>
+          </li>
+          <li class="suggestions-item">
+            <p class="text">Tips agar tetap produktif di tahun 2025</p>
+            <span class="material-symbols-rounded">lightbulb</span>
+          </li>
+          <li class="suggestions-item">
+            <p class="text">
+              Bagaimana cara memulai bisnis online dengan biaya minimal?
+            </p>
+            <span class="material-symbols-rounded">explore</span>
+          </li>
+          <li class="suggestions-item">
+            <p class="text">
+              Bagaimana agar tetap konsisten untuk belajar pemrograman
+            </p>
+            <span class="material-symbols-rounded">code_blocks</span>
+          </li>
+        </ul>
 
-      <div class="chats-container"></div>
+        <div class="chats-container"></div>
 
-      <div class="prompt-container">
-        <div class="prompt-wrapper">
-          <form action="#" class="prompt-form">
-            <textarea
-              placeholder="Ask Helium"
-              class="prompt-input"
-              required
-            ></textarea>
-            <div class="prompt-actions">
-              <div class="file-upload-wrapper">
-                <img src="" alt="" class="file-preview" />
-                <input
-                  type="file"
-                  accept="image/*, .pdf, .txt, .csv"
-                  id="file-input"
-                  hidden
-                />
+        <div class="prompt-container">
+          <div class="prompt-wrapper">
+            <form action="#" class="prompt-form">
+              <textarea
+                placeholder="Ask Helium"
+                class="prompt-input"
+                required
+              ></textarea>
+              <div class="prompt-actions">
+                <div class="file-upload-wrapper">
+                  <img src="" alt="" class="file-preview" />
+                  <input
+                    type="file"
+                    accept="image/*, .pdf, .txt, .csv"
+                    id="file-input"
+                    hidden
+                  />
+                  <button
+                    type="button"
+                    class="file-icon material-symbols-rounded"
+                  >
+                    description
+                  </button>
+                  <button
+                    type="button"
+                    id="add-file-btn"
+                    class="material-symbols-rounded"
+                  >
+                    attach_file
+                  </button>
+                  <button
+                    type="button"
+                    id="cancel-file-btn"
+                    class="material-symbols-rounded"
+                  >
+                    close
+                  </button>
+                </div>
                 <button
                   type="button"
-                  class="file-icon material-symbols-rounded"
-                >
-                  description
-                </button>
-                <button
-                  type="button"
-                  id="add-file-btn"
+                  id="stop-response-btn"
                   class="material-symbols-rounded"
                 >
-                  attach_file
+                  stop_circle
                 </button>
-                <button
-                  type="button"
-                  id="cancel-file-btn"
-                  class="material-symbols-rounded"
-                >
-                  close
+                <button id="send-prompt-btn" class="material-symbols-rounded">
+                  arrow_upward
                 </button>
               </div>
-              <button
-                type="button"
-                id="stop-response-btn"
-                class="material-symbols-rounded"
-              >
-                stop_circle
-              </button>
-              <button id="send-prompt-btn" class="material-symbols-rounded">
-                arrow_upward
-              </button>
-            </div>
-          </form>
-          <button id="delete-chats-btn" class="material-symbols-rounded">
-            delete
-          </button>
+            </form>
+            <button id="delete-chats-btn" class="material-symbols-rounded">
+              delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
